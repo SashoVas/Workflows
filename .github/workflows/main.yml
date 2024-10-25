@@ -17,4 +17,18 @@ jobs:
           name: code
           path: .
         
-  
+  Lint:
+    runs-on: ubuntu-latest
+    needs: [Build]
+    container: gradle:6-jdk11
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with: 
+          name: code
+          path: .
+      - name: Run linter
+        uses: super-linter/super-linter/slim@5
+        env: 
+          DEFAULT_BRANCH : main
+          GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
